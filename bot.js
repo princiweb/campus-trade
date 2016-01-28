@@ -18,21 +18,17 @@ var client = new Twitter({
 
 t.on('tweet', function (tweet) {
 
-  client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
-    if(error)
-      return console.error(error);
+  // client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
+    // if(error)
+      // return console.error(error);
     client.post('favorites/create.json', { id: tweet.id_str },  function(error, tweet, response){
       if(error)
         return console.error(error);
     });
-  });
+  // });
 
 });
 
 //t.track('#cpbrtrade');
 t.track('#cpbr9');
-t.track('#cpbr');
-t.track('#campus-party');
-t.track('#campusparty');
-t.track('#campus-party-brasil');
-t.track('#campuspartybrasil');
+t.track('@cpbrtrade');

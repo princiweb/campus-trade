@@ -35,20 +35,20 @@ var client = new Twitter({
 
 t.on('tweet', function (tweet) {
 
-  if(tweet.in_reply_to_status_id){
-    if(tweet.text.match(/finalizar/i)){
-      Trades.find({ idTweet:tweet.in_reply_to_status_id }).remove( function(err,removed){
-          if(err)
-            return console.error(err);
-          client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! Id: '+ tweet.in_reply_to_status_id},  function(error, tweet, response){
-            if(error)
-              return console.error(error);
-          });
-      });
-    }
-  }
+  // if(tweet.in_reply_to_status_id){
+  //   if(tweet.text.match(/finalizar/i)){
+  //     Trades.find().remove({ idTweet:tweet.in_reply_to_status_id_str }, function(err,removed){
+  //       if(err)
+  //         return console.error(err);
+  //       client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! Id: '+ tweet.in_reply_to_status_id},  function(error, tweet, response){
+  //         if(error)
+  //           return console.error(error);
+  //       });
+  //     });
+  //   }
+  // }
 
-  var regxp = /troc(o|ar) ([a-z\u00E0-\u00FC_\s]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
+  var regxp = /troc(o|ar) ([a-z\u00E0-\u00FC_\sA-Z]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
 
   var textMached = tweet.text.match(regxp);
   if(textMached){
@@ -74,7 +74,8 @@ t.on('tweet', function (tweet) {
       return console.error(err);
       client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, tweet, response){
         if(error)
-        return console.error(error);
+          return console.error(error);
+
       });
     });
   }

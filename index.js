@@ -37,31 +37,34 @@ t.on('tweet', function (tweet) {
 
   var regxp = /troco ([a-z\u00E0-\u00FC_\s]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
 
-  var offered = tweet.text.match(regxp)[1];
-  var wanted = tweet.text.match(regxp)[2];
+  var textMached = tweet.text.match(regxp);
+  if(textMached){
+    var offered = textMached[1];
+    var wanted = textMached[2];
 
-  var trade = new Trades({
-    user: {
-      id: tweet.user.id,
-      name: tweet.user.name,
-      screenName: tweet.user.screen_name,
-      profileImage: tweet.user.profile_image_url
-    },
-    idTweet: tweet.id_str,
-    content: tweet.text,
-    createdAt: new Date(tweet.created_at),
-    offered: offered,
-    wanted: wanted
-  });
-
-  trade.save(function (err) {
-    if (err)
-      return console.error(err);
-    client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, tweet, response){
-      if(error)
-        return console.error(error);
+    var trade = new Trades({
+      user: {
+        id: tweet.user.id,
+        name: tweet.user.name,
+        screenName: tweet.user.screen_name,
+        profileImage: tweet.user.profile_image_url
+      },
+      idTweet: tweet.id_str,
+      content: tweet.text,
+      createdAt: new Date(tweet.created_at),
+      offered: offered,
+      wanted: wanted
     });
-  });
+
+    trade.save(function (err) {
+      if (err)
+      return console.error(err);
+      client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, tweet, response){
+        if(error)
+        return console.error(error);
+      });
+    });
+  }
 });
 
 

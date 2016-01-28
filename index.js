@@ -18,6 +18,7 @@ var Trades = mongoose.model('Trades', {
     screenName: String,
     profileImage: String
   },
+  idTweet: String, //id_str
   content: String,
   offered: String,
   wanted: String,
@@ -46,6 +47,7 @@ t.on('tweet', function (tweet) {
       screenName: tweet.user.screen_name,
       profileImage: tweet.user.profile_image_url
     },
+    idTweet: tweet.id_str,
     content: tweet.text,
     createdAt: new Date(tweet.created_at),
     offered: offered,

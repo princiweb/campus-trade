@@ -37,10 +37,10 @@ t.on('tweet', function (tweet) {
 
   if(tweet.in_reply_to_status_id){
     if(tweet.text.match(/finalizar/i)){
-      Trades.find({ idTweet:tweet.id_str }).remove( function(err,removed){
+      Trades.find({ idTweet:tweet.in_reply_to_status_id }).remove( function(err,removed){
           if(err)
             return console.error(err);
-          client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! :)'},  function(error, tweet, response){
+          client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! Id: '+ tweet.in_reply_to_status_id},  function(error, tweet, response){
             if(error)
               return console.error(error);
           });

@@ -43,5 +43,5 @@ module.exports = function(screenName){
     mensgem = agradecimentoTemp + ' ' + sucessoTemp;
   else
     mensagem = sucessoTemp + ' ' + agradecimentoTemp;
-  return screenName + ' ' + mensagem + ' http://ta.tranquilo.ta/favoravel';
+  return screenName + ' ' + mensagem + ' http://campus-trade.meteor.com';
 }

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "mongoose": "^4.3.7",
-    "node-tweet-stream": "^1.10.0"
+    "node-tweet-stream": "^1.10.0",
+    "twitter": "^1.2.5"
   }
 }

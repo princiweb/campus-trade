@@ -19,7 +19,7 @@ var agradecimento = [
   'Tranquilo!',
   'Sucesso!',
   'Trocar irás em breve.',
-  'Trocar em breve irá'
+  'Trocar em breve irás.'
 ];
 
 var sucesso = [
@@ -43,5 +43,5 @@ module.exports = function(screenName){
     mensgem = agradecimentoTemp + ' ' + sucessoTemp;
   else
     mensagem = sucessoTemp + ' ' + agradecimentoTemp;
-  return screenName + ' ' + mensagem + ' http://campus-trade.meteor.com';
+  return screenName + ' ' + mensagem + ' http://goo.gl/l4Y19G. Ou, responda "cancelar"';
 }

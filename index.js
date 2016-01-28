@@ -1,6 +1,7 @@
 var TwitterStream  = require('node-tweet-stream');
 var mongoose = require('mongoose');
 var Twitter = require('twitter');
+var resposta = require('./resposta');
 
 mongoose.connect('mongodb://trade:trade@ds051655.mongolab.com:51655/campus-trade');
 var twitterKeys = {
@@ -46,6 +47,7 @@ t.on('tweet', function (tweet) {
       profileImage: tweet.user.profile_image_url
     },
     content: tweet.text,
+    createdAt: new Date(tweet.created_at),
     offered: offered,
     wanted: wanted
   });
@@ -53,7 +55,7 @@ t.on('tweet', function (tweet) {
   trade.save(function (err) {
     if (err)
       return console.error(err);
-    client.post('statuses/update', {status: '@'+tweet.user.screen_name+' ta tranquilo, ta favorável!'},  function(error, tweet, response){
+    client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, tweet, response){
       if(error)
         return console.error(error);
     });

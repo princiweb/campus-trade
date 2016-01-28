@@ -48,12 +48,12 @@ t.on('tweet', function (tweet) {
     }
   }
 
-  var regxp = /troco ([a-z\u00E0-\u00FC_\s]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
+  var regxp = /troc(o|ar) ([a-z\u00E0-\u00FC_\s]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
 
   var textMached = tweet.text.match(regxp);
   if(textMached){
-    var offered = textMached[1];
-    var wanted = textMached[2];
+    var offered = textMached[2];
+    var wanted = textMached[3];
 
     var trade = new Trades({
       user: {

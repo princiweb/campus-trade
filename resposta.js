@@ -43,5 +43,5 @@ module.exports = function(screenName){
     mensgem = agradecimentoTemp + ' ' + sucessoTemp;
   else
     mensagem = sucessoTemp + ' ' + agradecimentoTemp;
-  return screenName + ' ' + mensagem + ' http://goo.gl/l4Y19G. Ou, responda "cancelar"';
+  return screenName + ' ' + mensagem + ' http://goo.gl/l4Y19G. Ou, responda "finalizar"';
 }

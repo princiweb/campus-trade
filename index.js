@@ -35,6 +35,19 @@ var client = new Twitter({
 
 t.on('tweet', function (tweet) {
 
+  if(tweet.in_reply_to_status_id){
+    if(tweet.text.match(/finalizar/i)){
+      Trades.find({ idTweet:tweet.id_str }).remove( function(err,removed){
+          if(err)
+            return console.error(err);
+          client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! :)'},  function(error, tweet, response){
+            if(error)
+              return console.error(error);
+          });
+      });
+    }
+  }
+
   var regxp = /troco ([a-z\u00E0-\u00FC_\s]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
 
   var textMached = tweet.text.match(regxp);

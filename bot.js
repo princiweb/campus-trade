@@ -17,18 +17,24 @@ var client = new Twitter({
 });
 
 t.on('tweet', function (tweet) {
+  console.log('tweet received:',tweet.text);
+  // client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
+  //   if(error)
+  //     return console.error(error);
+  //
+  //   console.log('tweet retweeted');
+  //
+  // });
 
-  client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
+  client.post('favorites/create.json', { id: tweet.id_str },  function(error, tweet, response){
     if(error)
       return console.error(error);
-    client.post('favorites/create.json', { id: tweet.id_str },  function(error, tweet, response){
-      if(error)
-        return console.error(error);
-    });
+
+    console.log('tweet favorited');
+
   });
 
 });
 
 //t.track('#cpbrtrade');
-t.track('#cpbr9');
-t.track('@cpbrtrade');
+t.track('#CPBR9');

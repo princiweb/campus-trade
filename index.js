@@ -19,6 +19,7 @@ var Trades = mongoose.model('Trades', {
     profileImage: String
   },
   idTweet: String, //id_str
+  idResponseTweet: String, //id_str (tweet de resposta)
   content: String,
   offered: String,
   wanted: String,
@@ -34,22 +35,31 @@ var client = new Twitter({
 });
 
 t.on('tweet', function (tweet) {
+
   console.log('Tweet received');
 
-  // if(tweet.in_reply_to_status_id){
-  //   if(tweet.text.match(/finalizar/i)){
-  //     Trades.find().remove({ idTweet:tweet.in_reply_to_status_id_str }, function(err,removed){
-  //       if(err)
-  //         return console.error(err);
-  //       client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! Id: '+ tweet.in_reply_to_status_id},  function(error, tweet, response){
-  //         if(error)
-  //           return console.error(error);
-  //       });
-  //     });
-  //   }
-  // }
+  if(tweet.user.screen_name == 'cpbrtrade')
+    return false
 
-  var regxp = /troc(o|ar) ([a-z\u00E0-\u00FC_\sA-Z]+) por ([a-z\u00E0-\u00FC_\s]+\w)(.*)/i;
+  if(tweet.in_reply_to_status_id){
+    if(tweet.text.match(/(finalizar|cancelar)/i)){
+      Trades.remove({ idResponseTweet:tweet.in_reply_to_status_id_str }, function(err,removed){
+        if(err)
+          return console.error(err);
+        if(!removed)
+          return console.error('No tweets removed');
+        console.log('tweet deleted');
+
+        client.post('statuses/update', {status: '@'+tweet.user.screen_name+' pronto, sua troca foi finalizada! Id: '+ tweet.in_reply_to_status_id_str},  function(error, tweet, response){
+          if(error)
+            return console.error(error);
+          console.log('tweet answered');
+        });
+      });
+    }
+  }
+
+  var regxp = /troc(o|ar) (.*) por (.*[^\.!])/i;
 
   var textMached = tweet.text.match(regxp);
   if(textMached){
@@ -64,6 +74,7 @@ t.on('tweet', function (tweet) {
         profileImage: tweet.user.profile_image_url
       },
       idTweet: tweet.id_str,
+      idResponseTweet: null,
       content: tweet.text,
       createdAt: new Date(tweet.created_at),
       offered: offered,
@@ -75,14 +86,27 @@ t.on('tweet', function (tweet) {
         return console.error(err);
 
       console.log('Tweet saved');
-      
-      client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, tweet, response){
+
+      client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
+        if(error)
+          return console.error(error);
+        console.log('Tweet retweeted');
+      });
+
+      client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, responseTweet, response){
         if(error)
           return console.error(error);
 
-        console.log('Tweet updated');
+        Trades.update({idTweet: tweet.id_str},{idResponseTweet: responseTweet.id_str},function(err){
+          if(err)
+            return console.error(err);
+
+          console.log('Tweet updated');
+        });
       });
+
     });
+
   }
 });
 

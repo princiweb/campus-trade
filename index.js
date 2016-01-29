@@ -34,6 +34,7 @@ var client = new Twitter({
 });
 
 t.on('tweet', function (tweet) {
+  console.log('Tweet received');
 
   // if(tweet.in_reply_to_status_id){
   //   if(tweet.text.match(/finalizar/i)){
@@ -71,11 +72,15 @@ t.on('tweet', function (tweet) {
 
     trade.save(function (err) {
       if (err)
-      return console.error(err);
+        return console.error(err);
+
+      console.log('Tweet saved');
+      
       client.post('statuses/update', {status: resposta('@'+tweet.user.screen_name)},  function(error, tweet, response){
         if(error)
           return console.error(error);
 
+        console.log('Tweet updated');
       });
     });
   }

@@ -18,14 +18,14 @@ var client = new Twitter({
 
 t.on('tweet', function (tweet) {
 
-  // client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
-    // if(error)
-      // return console.error(error);
+  client.post('statuses/retweet/' + tweet.id_str + '.json', {},  function(error, tweet, response){
+    if(error)
+      return console.error(error);
     client.post('favorites/create.json', { id: tweet.id_str },  function(error, tweet, response){
       if(error)
         return console.error(error);
     });
-  // });
+  });
 
 });
 
